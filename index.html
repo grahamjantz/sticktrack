@@ -489,6 +489,7 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 
 let currentUser = null;
+window.currentStudentId = null;
 
 /* =============================================
    IN-MEMORY CACHE
@@ -962,7 +963,6 @@ function renderStudentsList() {
 /* =============================================
    STUDENT PANEL
 ============================================= */
-let currentStudentId = null;
 
 window.openStudentPanel = function(id) {
   currentStudentId = id;
