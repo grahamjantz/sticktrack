@@ -353,8 +353,8 @@
     .main-content{padding:12px;}
     header{padding:0 12px;}
     .logo{font-size:18px;}
-    .theme-btn .lbl{display:none;}
-    #auth-status{display:none;}
+    /* .theme-btn .lbl{display:none;} */
+    /* #auth-status{display:none;} */
     .section-header{gap:6px;}
     .section-title{font-size:16px;}
     .section-title::before{width:3px;height:16px;}
@@ -368,6 +368,12 @@
     .lesson-block{padding:8px;font-size:12px;}
     .lesson-block .ss-name{font-size:13px;}
     .slot{min-height:52px;}
+    #auth-bar{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+    }
   }
 </style>
 </head>
@@ -381,15 +387,15 @@
         <button class="nav-btn active" data-view="schedule" onclick="switchView('schedule')">Schedule</button>
         <button class="nav-btn" data-view="students" onclick="switchView('students')">Students</button>
         <button class="nav-btn" data-view="dashboard" onclick="switchView('dashboard')">Stats</button>
+        <div id="auth-bar">
+          <span class="sync-dot" id="sync-dot"></span>
+          <span id="auth-status">Not signed in</span>
+          <button class="btn btn-sm btn-primary" id="auth-btn" onclick="handleAuth()">Sign In</button>
+          <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">
+            <span id="theme-icon">☀️</span><span class="lbl" id="theme-lbl">Light</span>
+          </button>
+        </div>
       </nav>
-      <div id="auth-bar">
-        <span class="sync-dot" id="sync-dot"></span>
-        <span id="auth-status">Not signed in</span>
-        <button class="btn btn-sm btn-primary" id="auth-btn" onclick="handleAuth()">Sign In</button>
-      </div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">
-        <span id="theme-icon">☀️</span><span class="lbl" id="theme-lbl">Light</span>
-      </button>
     </div>
   </header>
 
