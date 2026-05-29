@@ -183,9 +183,10 @@
   }
 
   /* lesson block spans rows based on duration */
-  .lesson-block{border-radius:2px;padding:4px 6px;font-size:15px;font-family:var(--display);font-weight:600;letter-spacing:0.3px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;z-index:2;margin:2px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
-  .lesson-block:hover{opacity:0.85;}
+  .lesson-block{border-radius:2px;padding:4px 6px;font-size:15px;font-family:var(--display);font-weight:600;letter-spacing:0.3px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;z-index:2;margin:2px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+  /* .lesson-block:hover{opacity:0.85;} */
   .lesson-block .ss-name{font-size:18px;line-height:1.2;}
+  .lesson-block .ss-name:hover{opacity:0.85;cursor:pointer;text-decoration:underline;}
   .lesson-block .ss-dur{font-size:15px;opacity:0.7;margin-top:4px;}
   .lesson-block .ss-rm{opacity:0;font-size:15px;align-self:flex-end;line-height:1;cursor:pointer;}
   .lesson-block:hover .ss-rm{opacity:1;}
@@ -1058,7 +1059,7 @@ function renderDailySchedule(container, today, relevantTimes, startTimeIndex) {
     html += `
       <div class="lesson-block level-${s.level}" style="grid-row:span ${span}" id="${blockId}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="ss-name">${esc(s.name)}</div>
+          <div class="ss-name" onclick="openStudentPanel('${s.id}')">${esc(s.name)}</div>
           <div class="ss-rm" onclick="event.stopPropagation();removeFromSlot('${s.id}','${currentDay}','${time}')">✕</div>
         </div>
         <div class="ss-dur">${duration}m${recentLesson ? ' · ' + formatDate(recentLesson.date) : ''}</div>
