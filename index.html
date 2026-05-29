@@ -20,11 +20,11 @@
     --lv-pro:         #d95f5f;
   }
   [data-theme="dark"] {
-    --bg:#13151a; --bg2:#1b1e26; --bg3:#242830;
-    --border:#2a2e3a; --border2:#363c4c;
-    --text:#dde2ee; --text2:#8892a8; --text3:#4e5669;
-    --accent:#5b8dee; --accent2:#3a6bd4;
-    --accent-glow:rgba(91,141,238,0.13); --scrollthumb:#363c4c;
+    --bg:#1c1f27; --bg2:#252933; --bg3:#2e3340;
+    --border:#363c4e; --border2:#454d62;
+    --text:#e2e6f0; --text2:#96a0b8; --text3:#5e6880;
+    --accent:#6b9bf0; --accent2:#4a7de0;
+    --accent-glow:rgba(107,155,240,0.15); --scrollthumb:#454d62;
   }
   [data-theme="light"] {
     --bg:#f0f2f7; --bg2:#ffffff; --bg3:#e8ebf2;
@@ -99,8 +99,8 @@
   .section-title{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:2px;text-transform:uppercase;color:var(--text);display:flex;align-items:center;gap:10px;}
   .section-title::before{content:'';display:block;width:4px;height:20px;background:var(--accent);}
 
-  /* Schedule view toggle */
-  .schedule-view-toggle{display:none;background:var(--bg3);padding:3px;border-radius:var(--radius);border:1px solid var(--border);}
+  /* Schedule view toggle — always visible */
+  .schedule-view-toggle{display:flex;background:var(--bg3);padding:3px;border-radius:var(--radius);border:1px solid var(--border);}
   .schedule-view-toggle button{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border:none;background:transparent;color:var(--text2);cursor:pointer;border-radius:2px;transition:all 0.15s;}
   .schedule-view-toggle button:hover{color:var(--text);background:var(--bg2);}
   .schedule-view-toggle button.active{background:var(--accent);color:#fff;}
@@ -183,12 +183,18 @@
   }
 
   /* lesson block spans rows based on duration */
-  .lesson-block{border-radius:2px;padding:4px 6px;font-size:11px;font-family:var(--display);font-weight:600;letter-spacing:0.3px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;z-index:2;margin:2px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+  .lesson-block{border-radius:2px;padding:4px 6px;font-size:15px;font-family:var(--display);font-weight:600;letter-spacing:0.3px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;z-index:2;margin:2px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
   .lesson-block:hover{opacity:0.85;}
-  .lesson-block .ss-name{font-size:12px;line-height:1.2;}
-  .lesson-block .ss-dur{font-size:10px;opacity:0.7;margin-top:4px;}
-  .lesson-block .ss-rm{opacity:0;font-size:10px;align-self:flex-end;line-height:1;cursor:pointer;}
+  .lesson-block .ss-name{font-size:18px;line-height:1.2;}
+  .lesson-block .ss-dur{font-size:15px;opacity:0.7;margin-top:4px;}
+  .lesson-block .ss-rm{opacity:0;font-size:15px;align-self:flex-end;line-height:1;cursor:pointer;}
   .lesson-block:hover .ss-rm{opacity:1;}
+
+  /* Smaller text inside lesson blocks in weekly view */
+  .week-grid .lesson-block{font-size:10px;padding:3px 5px;}
+  .week-grid .lesson-block .ss-name{font-size:11px;}
+  .week-grid .lesson-block .ss-dur{font-size:9px;}
+  .week-grid .lesson-block .ss-rm{font-size:9px;}
 
   /* Level colours */
   .level-beginner{background:rgba(58,173,122,0.18);color:var(--lv-beginner);border:1px solid rgba(58,173,122,0.3);}
@@ -317,6 +323,12 @@
   .lesson-field-label{font-family:var(--display);font-weight:600;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:3px;}
   .lesson-field-value{font-size:12px;color:var(--text);white-space:pre-wrap;}
   
+  /* Notes preview in daily schedule blocks */
+  .lesson-block .ss-notes-preview{font-size:12px;opacity:0.75;margin-top:3px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-family:var(--mono);font-weight:400;letter-spacing:0;max-height:2.6em;}
+  .lesson-block.expanded .ss-notes-preview{display:block;-webkit-line-clamp:unset;max-height:none;white-space:pre-wrap;}
+  .ss-expand-btn{font-size:9px;opacity:0.5;margin-top:2px;cursor:pointer;text-decoration:underline;font-family:var(--mono);font-weight:400;letter-spacing:0;align-self:flex-start;}
+  .ss-expand-btn:hover{opacity:1;}
+
   /* Bullet point styling for lesson notes */
   .lesson-field-value ul{margin:0;padding-left:20px;}
   .lesson-field-value ul li{margin-bottom:4px;}
@@ -360,7 +372,6 @@
     .section-title::before{width:3px;height:16px;}
     
     /* Mobile schedule improvements */
-    .schedule-view-toggle{display:flex;}
     .week-grid{min-width:unset;overflow-x:auto;}
     .students-grid{grid-template-columns:1fr;}
     
@@ -403,7 +414,7 @@
     <!-- SCHEDULE -->
     <div id="view-schedule" class="view active">
       <div class="section-header">
-        <div class="section-title">Weekly Schedule</div>
+        <div class="section-title">Schedule</div>
         <div class="schedule-view-toggle">
           <button class="active" onclick="setScheduleView('daily')">Daily</button>
           <button onclick="setScheduleView('weekly')">Weekly</button>
@@ -538,7 +549,7 @@
       <div class="field">
         <label>Lesson Notes</label>
         <textarea class="notes-editor" id="l-notes" placeholder="What was covered this lesson…"></textarea>
-        <div style="font-size:10px;color:var(--text3);margin-top:4px">Tip: Press Enter for bullets, Tab to indent</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px">Enter = new bullet · Tab / Shift+Tab = indent · Cmd+] / Cmd+[ = indent/outdent</div>
       </div>
       <div class="field"><label>Practice Assignments</label><textarea id="l-assignments" placeholder="What to practise before next lesson…"></textarea></div>
       <div class="field"><label>Areas to Improve</label><textarea id="l-improve" placeholder="Technique weaknesses, timing issues…"></textarea></div>
@@ -846,12 +857,8 @@ function isMobile() {
   return window.innerWidth <= 768;
 }
 
-// Set default schedule view based on device
-if (isMobile()) {
-  scheduleView = 'daily';
-} else {
-  scheduleView = 'weekly';
-}
+// Always default to daily view
+scheduleView = 'daily';
 
 window.setScheduleView = function(view) {
   scheduleView = view;
@@ -873,26 +880,38 @@ populateAssignTimes();
 ============================================= */
 function getEarliestScheduledTime() {
   if (!_schedule.length) return 0;
-  
   const timeIndexes = _schedule.map(e => TIMES.indexOf(e.startTime)).filter(i => i !== -1);
   return timeIndexes.length ? Math.min(...timeIndexes) : 0;
+}
+
+function getLatestScheduledTime() {
+  if (!_schedule.length) return TIMES.length - 1;
+  // Account for duration — a 90-min lesson at index 5 ends at index 7
+  let maxEnd = 0;
+  _schedule.forEach(e => {
+    const idx = TIMES.indexOf(e.startTime);
+    if (idx === -1) return;
+    const span = Math.max(1, Math.round((e.duration || 30) / 30));
+    maxEnd = Math.max(maxEnd, idx + span - 1);
+  });
+  return Math.min(maxEnd, TIMES.length - 1);
 }
 
 
 
 function renderSchedule() {
   const container = document.getElementById('schedule-container');
-  // const today = new Date().getDay()
   const today = currentDayIndex;
   
-  // Get earliest scheduled time to start rendering from
-  const startTimeIndex = getEarliestScheduledTime();
-  const relevantTimes = TIMES.slice(startTimeIndex);
+  // Trim to just the range that has scheduled lessons
+  const startIdx = getEarliestScheduledTime();
+  const endIdx   = getLatestScheduledTime();
+  const relevantTimes = _schedule.length ? TIMES.slice(startIdx, endIdx + 1) : TIMES;
   
   if (scheduleView === 'weekly') {
-    renderWeeklySchedule(container, today, relevantTimes, startTimeIndex);
+    renderWeeklySchedule(container, today, relevantTimes, startIdx);
   } else {
-    renderDailySchedule(container, today, relevantTimes, startTimeIndex);
+    renderDailySchedule(container, today, relevantTimes, startIdx);
   }
 }
 
@@ -933,7 +952,6 @@ function renderWeeklySchedule(container, today, relevantTimes, startTimeIndex) {
   const occupied = {};
 
   relevantTimes.forEach((time, relIndex) => {
-    const actualIndex = startTimeIndex + relIndex;
     html += `<div class="time-row-label">${time}</div>`;
 
     DAYS.forEach(day => {
@@ -982,32 +1000,27 @@ function renderDailySchedule(container, today, relevantTimes, startTimeIndex) {
   const currentDay = DAYS[today];
   const grid = document.createElement('div');
   grid.className = 'day-grid';
-  
-  // let html = '<div class="day-header day-header-time"></div>';
-  // html += `<div class="day-header today">${currentDay}</div>`;
 
   let html = `
     <div class="daily-nav">
-            <div class="day-header today">
-              ${currentDay}
-            </div>
+      <div class="day-header today">${currentDay}</div>
       <div class="daily-nav-subnav">
-        
         <button class="day-nav-btn btn btn-primary" onclick="previousDay()">←</button>
         <button class="today-btn btn btn-primary" onclick="goToToday()">Today</button>
         <button class="day-nav-btn btn btn-primary" onclick="nextDay()">→</button>
-        
       </div>
     </div>
   `;
+
   const occupied = {};
+  const notesMap = {};
 
   relevantTimes.forEach((time, relIndex) => {
-    const actualIndex = startTimeIndex + relIndex;
     html += `<div class="time-row-label">${time}</div>`;
 
     const cellKey = `${currentDay}-${time}`;
     if (occupied[cellKey]) {
+      // still need to emit an empty cell so grid doesn't break
       return;
     }
 
@@ -1034,18 +1047,35 @@ function renderDailySchedule(container, today, relevantTimes, startTimeIndex) {
       return;
     }
 
+    const recentLesson = getLessonsFor(s.id)[0];
+    const notesRaw = recentLesson?.notes || '';
+    const notesPreview = notesRaw.replace(/^[\s•\-\*]+/m, '').replace(/\n/g, ' ').trim().slice(0, 100);
+    const blockId = `blk-${s.id}-${time.replace(/[: ]/g,'_')}`;
+    const hasMore = notesRaw.length > 60;
+
+    if (notesRaw) notesMap[blockId] = notesRaw;
+
     html += `
-      <div class="lesson-block level-${s.level}" style="grid-row:span ${span}"
-           onclick="openStudentPanel('${s.id}')">
-        <div class="ss-name">${esc(s.name)}</div>
-        <div class="ss-dur">${duration}m</div>
-        <div class="ss-rm" onclick="event.stopPropagation();removeFromSlot('${s.id}','${currentDay}','${time}')">✕</div>
+      <div class="lesson-block level-${s.level}" style="grid-row:span ${span}" id="${blockId}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="ss-name">${esc(s.name)}</div>
+          <div class="ss-rm" onclick="event.stopPropagation();removeFromSlot('${s.id}','${currentDay}','${time}')">✕</div>
+        </div>
+        <div class="ss-dur">${duration}m${recentLesson ? ' · ' + formatDate(recentLesson.date) : ''}</div>
+        ${notesPreview ? `<div class="ss-notes-preview" id="np-${blockId}">${esc(notesPreview)}${notesRaw.length > 100 ? '…' : ''}</div>` : ''}
+        ${hasMore ? `<div class="ss-expand-btn" id="eb-${blockId}" onclick="event.stopPropagation();toggleBlockNotes('${blockId}')">more ↓</div>` : ''}
       </div>`;
   });
 
+  // Set innerHTML first, then attach full notes as plain JS properties — no escaping issues
   grid.innerHTML = html;
   container.innerHTML = '';
   container.appendChild(grid);
+
+  Object.entries(notesMap).forEach(([id, notes]) => {
+    const el = document.getElementById(id);
+    if (el) el._fullNotes = notes;
+  });
 }
 
 window.removeFromSlot = async function(studentId, day, startTime) {
@@ -1059,6 +1089,26 @@ window.removeFromSlot = async function(studentId, day, startTime) {
   }
   setSyncing(false);
   renderSchedule();
+};
+
+// Toggle expanded notes preview on a daily schedule block
+window.toggleBlockNotes = function(blockId) {
+  const block = document.getElementById(blockId);
+  if (!block) return;
+  const np  = document.getElementById('np-' + blockId);
+  const btn = document.getElementById('eb-' + blockId);
+  const expanded = block.classList.toggle('expanded');
+  if (np && block._fullNotes) {
+    if (expanded) {
+      np.style.cssText = 'white-space:pre-wrap;overflow:visible;display:block;-webkit-line-clamp:unset;max-height:none;';
+      np.textContent = block._fullNotes;
+    } else {
+      np.style.cssText = '';
+      const preview = block._fullNotes.replace(/^[\s•\-\*]+/m,'').replace(/\n/g,' ').trim().slice(0,100);
+      np.textContent = preview + (block._fullNotes.length > 100 ? '…' : '');
+    }
+  }
+  if (btn) btn.textContent = expanded ? 'less ↑' : 'more ↓';
 };
 
 /* =============================================
@@ -1114,8 +1164,10 @@ window.openAddStudentModal = function() {
   document.getElementById('s-level').value='beginner';
   document.getElementById('s-assign-day').value='';
   document.getElementById('s-assign-duration').value='30';
+  const hadDraft = restoreStudentDraft(null);
+  if (hadDraft) showToast('Draft restored ✦');
   openModal('modal-student');
-  setTimeout(()=>document.getElementById('s-name').focus(),100);
+  setTimeout(() => { setupStudentDraftHooks(); document.getElementById('s-name').focus(); }, 80);
 };
 
 window.openEditStudentModal = function(id) {
@@ -1131,7 +1183,10 @@ window.openEditStudentModal = function(id) {
   document.getElementById('s-notes').value        = s.notes||'';
   document.getElementById('s-parent-email').value = s.parentEmail||'';
   document.getElementById('s-assign-day').value   = '';
+  const hadDraft = restoreStudentDraft(id);
+  if (hadDraft) showToast('Unsaved draft restored ✦');
   openModal('modal-student');
+  setTimeout(setupStudentDraftHooks, 80);
 };
 
 window.saveStudent = async function() {
@@ -1168,6 +1223,7 @@ window.saveStudent = async function() {
       }
     }
     showToast('Student saved');
+    clearStudentDraft();
   } catch(e) {
     showToast('Save failed: '+e.message, true);
     console.error(e);
@@ -1384,40 +1440,228 @@ window.toggleLesson = (id) => document.getElementById('lesson-body-'+id)?.classL
 
 /* =============================================
    ENHANCED NOTES EDITOR
+   • Auto-bullet on new line
+   • Tab / Shift+Tab indent/outdent
+   • Cmd/Ctrl + ] / [ indent/outdent
+   • Enter on empty bullet removes bullet level
 ============================================= */
 function setupNotesEditor() {
   const notesField = document.getElementById('l-notes');
-  if (!notesField) return;
-  
+  if (!notesField || notesField._editorAttached) return;
+  notesField._editorAttached = true;
+
   notesField.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
+    const isMac = navigator.platform.toUpperCase().includes('MAC');
+    const mod = isMac ? e.metaKey : e.ctrlKey;
+    const start = this.selectionStart;
+    const end   = this.selectionEnd;
+    const text  = this.value;
+
+    /* ---- ENTER: auto-bullet ---- */
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      const start = this.selectionStart;
-      const end = this.selectionEnd;
-      const text = this.value;
-      const lines = text.substring(0, start).split('\n');
+      const beforeCursor = text.substring(0, start);
+      const lines = beforeCursor.split('\n');
       const currentLine = lines[lines.length - 1];
-      
-      // Check indent level
-      const indent = currentLine.search(/\S/);
-      const indentStr = currentLine.substring(0, indent);
-      
-      // Insert newline with same indent
-      const newText = text.substring(0, start) + '\n' + indentStr + text.substring(end);
+
+      // Detect indent prefix + bullet
+      const m = currentLine.match(/^(\s*)(•\s?)?/);
+      const indentStr = m ? m[1] : '';
+      const hasBullet = m && m[2];
+
+      // If current line is just an empty bullet, remove it and outdent
+      const lineContent = currentLine.trim().replace(/^•\s?/, '');
+      if (hasBullet && lineContent === '') {
+        // Backspace the bullet line
+        const lineStart = beforeCursor.lastIndexOf('\n') + 1;
+        const newText = text.substring(0, lineStart) + text.substring(end);
+        this.value = newText;
+        this.selectionStart = this.selectionEnd = lineStart;
+        autosaveDraft();
+        return;
+      }
+
+      const insert = hasBullet ? `\n${indentStr}• ` : `\n${indentStr}`;
+      const newText = text.substring(0, start) + insert + text.substring(end);
       this.value = newText;
-      this.selectionStart = this.selectionEnd = start + 1 + indent;
-    } else if (e.key === 'Tab') {
+      const pos = start + insert.length;
+      this.selectionStart = this.selectionEnd = pos;
+      autosaveDraft();
+      return;
+    }
+
+    /* ---- TAB: indent ---- */
+    if (e.key === 'Tab' && !e.shiftKey && !mod) {
       e.preventDefault();
-      const start = this.selectionStart;
-      const end = this.selectionEnd;
-      const text = this.value;
-      
-      // Insert two spaces
-      const newText = text.substring(0, start) + '  ' + text.substring(end);
-      this.value = newText;
-      this.selectionStart = this.selectionEnd = start + 2;
+      indentLines(this, '  ');
+      autosaveDraft();
+      return;
+    }
+
+    /* ---- SHIFT+TAB: outdent ---- */
+    if (e.key === 'Tab' && e.shiftKey && !mod) {
+      e.preventDefault();
+      outdentLines(this, '  ');
+      autosaveDraft();
+      return;
+    }
+
+    /* ---- CMD/CTRL + ]: indent ---- */
+    if (mod && e.key === ']') {
+      e.preventDefault();
+      indentLines(this, '  ');
+      autosaveDraft();
+      return;
+    }
+
+    /* ---- CMD/CTRL + [: outdent ---- */
+    if (mod && e.key === '[') {
+      e.preventDefault();
+      outdentLines(this, '  ');
+      autosaveDraft();
+      return;
     }
   });
+
+  // Autosave on input
+  notesField.addEventListener('input', autosaveDraft);
+}
+
+function indentLines(el, prefix) {
+  const start = el.selectionStart, end = el.selectionEnd;
+  const text = el.value;
+  const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+  const lineEnd   = text.indexOf('\n', end);
+  const block     = text.substring(lineStart, lineEnd === -1 ? undefined : lineEnd);
+  const indented  = block.split('\n').map(l => prefix + l).join('\n');
+  el.value = text.substring(0, lineStart) + indented + (lineEnd === -1 ? '' : text.substring(lineEnd));
+  el.selectionStart = start + prefix.length;
+  el.selectionEnd   = end   + prefix.length * block.split('\n').length;
+}
+
+function outdentLines(el, prefix) {
+  const start = el.selectionStart, end = el.selectionEnd;
+  const text = el.value;
+  const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+  const lineEnd   = text.indexOf('\n', end);
+  const block     = text.substring(lineStart, lineEnd === -1 ? undefined : lineEnd);
+  let removedBefore = 0;
+  const outdented = block.split('\n').map((l, idx) => {
+    if (l.startsWith(prefix)) {
+      if (idx === 0) removedBefore = prefix.length;
+      return l.substring(prefix.length);
+    }
+    return l;
+  }).join('\n');
+  el.value = text.substring(0, lineStart) + outdented + (lineEnd === -1 ? '' : text.substring(lineEnd));
+  el.selectionStart = Math.max(lineStart, start - removedBefore);
+  el.selectionEnd   = Math.max(lineStart, end - prefix.length * block.split('\n').length);
+}
+
+/* =============================================
+   AUTOSAVE / DRAFT RECOVERY (localStorage)
+   Keys: st_draft_lesson, st_draft_student
+============================================= */
+function autosaveDraft() {
+  if (!editingLessonStudentId) return;
+  const draft = {
+    studentId:     editingLessonStudentId,
+    lessonId:      editingLessonId,
+    date:          document.getElementById('l-date')?.value,
+    duration:      currentLessonDur,
+    notes:         document.getElementById('l-notes')?.value,
+    assignments:   document.getElementById('l-assignments')?.value,
+    improve:       document.getElementById('l-improve')?.value,
+    songs:         document.getElementById('l-songs')?.value,
+    links:         document.getElementById('l-links')?.value,
+    attendance:    document.getElementById('l-attendance')?.value,
+    payment:       document.getElementById('l-payment')?.value,
+    visibleParent: document.getElementById('l-visible-parent')?.checked,
+    savedAt:       Date.now(),
+  };
+  localStorage.setItem('st_draft_lesson', JSON.stringify(draft));
+}
+
+function clearLessonDraft() {
+  localStorage.removeItem('st_draft_lesson');
+}
+
+function restoreLessonDraft(sid, lid) {
+  try {
+    const raw = localStorage.getItem('st_draft_lesson');
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    // Only restore if matches this student+lesson (or a new lesson for this student)
+    if (d.studentId !== sid) return false;
+    if (lid && d.lessonId !== lid) return false;
+    // Stale after 24 h
+    if (Date.now() - d.savedAt > 86400000) { clearLessonDraft(); return false; }
+
+    if (d.date)         document.getElementById('l-date').value         = d.date;
+    if (d.notes!=null)  document.getElementById('l-notes').value        = d.notes;
+    if (d.assignments)  document.getElementById('l-assignments').value  = d.assignments;
+    if (d.improve)      document.getElementById('l-improve').value      = d.improve;
+    if (d.songs)        document.getElementById('l-songs').value        = d.songs;
+    if (d.links)        document.getElementById('l-links').value        = d.links;
+    if (d.attendance)   document.getElementById('l-attendance').value   = d.attendance;
+    if (d.payment!=null)document.getElementById('l-payment').value      = d.payment;
+    if (d.visibleParent!=null) document.getElementById('l-visible-parent').checked = d.visibleParent;
+    if (d.duration)     selectDur(d.duration);
+    return true;
+  } catch { return false; }
+}
+
+function autosaveStudentDraft() {
+  const draft = {
+    id:          editingStudentId,
+    name:        document.getElementById('s-name')?.value,
+    age:         document.getElementById('s-age')?.value,
+    level:       document.getElementById('s-level')?.value,
+    contact:     document.getElementById('s-contact')?.value,
+    parentEmail: document.getElementById('s-parent-email')?.value,
+    goals:       document.getElementById('s-goals')?.value,
+    tags:        document.getElementById('s-tags')?.value,
+    notes:       document.getElementById('s-notes')?.value,
+    savedAt:     Date.now(),
+  };
+  localStorage.setItem('st_draft_student', JSON.stringify(draft));
+}
+
+function clearStudentDraft() {
+  localStorage.removeItem('st_draft_student');
+}
+
+function restoreStudentDraft(id) {
+  try {
+    const raw = localStorage.getItem('st_draft_student');
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    if (d.id !== id && id) return false; // editing a different student
+    if (id && d.id !== id) return false;
+    if (Date.now() - d.savedAt > 86400000) { clearStudentDraft(); return false; }
+    if (d.name)        document.getElementById('s-name').value         = d.name;
+    if (d.age)         document.getElementById('s-age').value          = d.age;
+    if (d.level)       document.getElementById('s-level').value        = d.level;
+    if (d.contact)     document.getElementById('s-contact').value      = d.contact;
+    if (d.parentEmail) document.getElementById('s-parent-email').value = d.parentEmail;
+    if (d.goals)       document.getElementById('s-goals').value        = d.goals;
+    if (d.tags)        document.getElementById('s-tags').value         = d.tags;
+    if (d.notes)       document.getElementById('s-notes').value        = d.notes;
+    return true;
+  } catch { return false; }
+}
+
+// Hook student modal fields for autosave
+function setupStudentDraftHooks() {
+  ['s-name','s-age','s-level','s-contact','s-parent-email','s-goals','s-tags','s-notes']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el._draftHooked) {
+        el.addEventListener('input', autosaveStudentDraft);
+        el.addEventListener('change', autosaveStudentDraft);
+        el._draftHooked = true;
+      }
+    });
 }
 
 /* =============================================
@@ -1438,9 +1682,27 @@ window.openAddLessonModal = function(sid) {
   document.getElementById('l-attendance').value='present';
   document.getElementById('l-payment').value='';
   document.getElementById('l-visible-parent').checked=false;
-  bpmRows=[]; renderBPMRows(); selectDur(30);
+  bpmRows=[]; renderBPMRows();
+
+  // Default duration from student schedule slot if available
+  const studentSlot = _schedule.find(e=>e.studentId===sid);
+  selectDur(studentSlot?.duration || 30);
+
+  // Try to restore a draft
+  const hadDraft = restoreLessonDraft(sid, null);
+  if (hadDraft) showToast('Draft restored ✦');
+
+  // Seed first bullet if notes empty
+  const notesField = document.getElementById('l-notes');
+  if (notesField && !notesField.value) notesField.value = '• ';
+
   openModal('modal-lesson');
-  setTimeout(setupNotesEditor, 100);
+  setTimeout(() => {
+    setupNotesEditor();
+    // Place cursor at end
+    const nf = document.getElementById('l-notes');
+    if (nf) { nf.focus(); nf.selectionStart = nf.selectionEnd = nf.value.length; }
+  }, 80);
 };
 
 window.openEditLessonModal = function(sid, lid) {
@@ -1458,8 +1720,11 @@ window.openEditLessonModal = function(sid, lid) {
   document.getElementById('l-visible-parent').checked=!!l.isVisibleToParent;
   bpmRows=(l.bpm||[]).map(b=>({...b})); renderBPMRows();
   selectDur(parseInt(l.duration)||30);
+  // Try to restore a more recent draft
+  const hadDraft = restoreLessonDraft(sid, lid);
+  if (hadDraft) showToast('Unsaved draft restored ✦');
   openModal('modal-lesson');
-  setTimeout(setupNotesEditor, 100);
+  setTimeout(() => { setupNotesEditor(); }, 80);
 };
 
 window.saveLesson = async function() {
@@ -1491,6 +1756,7 @@ window.saveLesson = async function() {
   setSyncing(true);
   try {
     await fsSetLesson(lesson);
+    clearLessonDraft();
     showToast('Lesson saved');
   } catch(e) { showToast('Save failed: '+e.message, true); console.error(e); }
   setSyncing(false);
@@ -1572,10 +1838,27 @@ function formatDate(s){
   return new Date(s+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 }
 
+// Modal keyboard: Enter = save, Escape = close (but not when in textarea/select)
 document.addEventListener('keydown', e=>{
   if(e.key==='Escape'){
-    document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
+    const openModals = [...document.querySelectorAll('.modal-overlay.open')];
+    if (openModals.length) { closeModal(openModals[openModals.length-1].id); return; }
     if(document.getElementById('student-panel').classList.contains('open')) closeStudentPanel();
+    return;
+  }
+
+  // Enter to save — only when a modal is open and focus isn't in a textarea/select
+  if(e.key==='Enter' && !e.shiftKey && !e.metaKey && !e.ctrlKey){
+    const tag = document.activeElement?.tagName;
+    if (tag === 'TEXTAREA' || tag === 'SELECT') return; // let natural behavior through
+
+    const openModals = [...document.querySelectorAll('.modal-overlay.open')];
+    if (!openModals.length) return;
+    const topModal = openModals[openModals.length-1].id;
+    e.preventDefault();
+    if (topModal === 'modal-lesson')  { saveLesson(); return; }
+    if (topModal === 'modal-student') { saveStudent(); return; }
+    if (topModal === 'modal-slot')    { saveSlotAssignment(); return; }
   }
 });
 
